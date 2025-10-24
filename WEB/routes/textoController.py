@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify, Blueprint, render_template, redirect, url_for, flash, current_app
-from datetime import datetime, timedelta
 import uuid # Para generar nombres de fichero únicos
 from werkzeug.utils import secure_filename
 from azure.storage.blob import BlobServiceClient
 from azure.core.credentials import AzureKeyCredential
 from azure.core.credentials import AzureNamedKeyCredential
-import os
-from dotenv import load_dotenv
+from WEB.utils.textoOCR import obtener_texto_ocr
+from WEB.utils.traduccionImg import traducir_texto_ocr
 
 controller = Blueprint('textoController', __name__, url_prefix="/upload")
 
@@ -34,9 +33,41 @@ def subida_analisis_texto():
     #Obtener la URL pública
     blob_url = blob_client.url
 
+    texto_extraido = extraer(blob_url)
+    idioma_detectado, texto_traducido = traduccion(texto_extraido)
+
     return render_template(
         'index.html',
         imagen_url=blob_url,
-        texto_original="Chupa"
+        texto_original=texto_extraido if texto_extraido != " " else "Sin texto que extraer",
+        idioma=idioma_detectado if texto_traducido != " " else "No se pudo detectar el idioma",
+        texto_traducido = texto_traducido if texto_traducido != " " else " No se pudo realizar la traducción"
     )
 
+def extraer(imagen_url) -> str:
+    ENPOINT_URL_VISION = current_app.config["ENPOINT_URL_VISION"]
+    SUBSCRIPTION_ID =current_app.config["SUBSCRIPTION_ID"]
+
+    credential = AzureKeyCredential(
+        SUBSCRIPTION_ID
+    )
+
+    texto_extraido = obtener_texto_ocr(
+        credential=credential,
+        endpoint=ENPOINT_URL_VISION,
+        image_url=imagen_url          
+    ) 
+
+    return texto_extraido
+
+def traduccion(texto):
+    ENPOINT_URL_TRANSLATOR = current_app.config["ENPOINT_URL_TRANSLATOR"]
+    CREDENTIAL_TRANSLATOR = current_app.config["CREDENTIAL_TRANSLATOR"]
+
+    credential = AzureKeyCredential(
+        CREDENTIAL_TRANSLATOR
+    )
+
+    idioma_detectado, texto_traducido = traducir_texto_ocr(credential, ENPOINT_URL_TRANSLATOR, texto)
+
+    return idioma_detectado, texto_traducido
