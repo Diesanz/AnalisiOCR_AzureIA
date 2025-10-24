@@ -4,8 +4,8 @@ from werkzeug.utils import secure_filename
 from azure.storage.blob import BlobServiceClient
 from azure.core.credentials import AzureKeyCredential
 from azure.core.credentials import AzureNamedKeyCredential
-from WEB.utils.textoOCR import obtener_texto_ocr
-from WEB.utils.traduccionImg import traducir_texto_ocr
+from utils.textoOCR import obtener_texto_ocr
+from utils.traduccionImg import traducir_texto_ocr
 
 controller = Blueprint('textoController', __name__, url_prefix="/upload")
 

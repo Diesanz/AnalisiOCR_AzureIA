@@ -8,7 +8,7 @@ def create_app():
     app = Flask(__name__, template_folder='templates')
 
     # Clave secreta
-    app.secret_key = os.getenv("CLAVE_APP")
+    app.secret_key = "clave-secreta-6734"
     if not app.secret_key:
         raise RuntimeError("CLAVE_APP no definida en el entorno")
 
@@ -33,7 +33,7 @@ def create_app():
 
     # Registrar Blueprint
     try:
-        from .routes.textoController import controller
+        from routes.textoController import controller
         app.register_blueprint(controller)
     except ImportError as e:
         raise ImportError(f"No se pudo importar el blueprint: {e}")
@@ -55,6 +55,7 @@ def index():
     con el selector de fichero.
     """
     return render_template('index.html')
+
 
 # ------------------------------
 # Ejecutar la app
