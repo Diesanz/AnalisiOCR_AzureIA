@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de texto (SIDO)</title>
+    <meta name="description" content="Analiza imágenes y extrae texto utilizando técnicas de OCR y análisis de contenido.">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Analizador de texto (SIDO)</h1>
+        
+        <!-- (Requisito 1a) Selector de fichero -->
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file">Selecciona una imagen escaneada:</label><br>
+            <input type="file" id="file" name="file" accept="image/png, image/jpeg" required>
+            <br>
+            <input type="submit" value="Analizar Imagen">
+        </form>
+
+        <!-- Esta sección solo se muestra si Flask pasa resultados -->
+        {% if error %}
+            <div class="error">
+                <strong>Error:</strong> {{ error }}
+            </div>
+        {% endif %}
+
+        {% if texto_original %}
+            <div class="results">
+                <h2>Resultados del Análisis</h2>
+
+                <!-- Opcional: Muestra la imagen que se subió -->
+                {% if imagen_url %}
+                    <h3>Imagen Almacenada en Azure:</h3>
+                    <img src="{{ imagen_url }}" alt="Imagen analizada" class="preview">
+                {% endif %}
+                
+                <!-- (Requisito 2) Texto Original -->
+                <h2>Texto Original extraido de la imagen (OCR)</h2>
+                <pre>{{ texto_original }}</pre>
+                
+                <!-- (Requisito 2) Detección y Traducción -->
+                <h2>Detección del idioma y Traducción del texto de la imagen</h2>
+                <pre><strong>Idioma Detectado:</strong> {{ idioma }}</pre>
+                <pre><strong>Texto Traducido:</strong>{{ texto_traducido }}</pre>
+                
+
+                <!-- (Parte 2) Sentimiento y Temas -->
+                <h2>Análisis de Contenido (Text Analytics)</h2>
+                
+                {% if sentimiento %}
+                    <h3>Sentimiento General</h3>
+                    <pre>{{ sentimiento }}</pre>
+                {% endif %}
+
+                {% if frases_clave %}
+                    <h3>Etiquetado (Frases Clave) 🏷️</h3>
+                    <pre>
+                    {% for frase in frases_clave %}
+                    - {{ frase }}
+                    {% endfor %}
+                    </pre>
+                {% endif %}
+
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

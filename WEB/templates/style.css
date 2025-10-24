@@ -1,0 +1,88 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background-color: #f4f7f6;
+}
+
+h1,
+h2 {
+  color: #005a9e;
+}
+
+h2 {
+  border-bottom: 2px solid #005a9e;
+  padding-bottom: 5px;
+  margin-top: 30px;
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+form {
+  margin-bottom: 30px;
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+input[type="file"] {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  width: calc(100% - 24px);
+}
+
+input[type="submit"] {
+  background-color: #0078d4;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: #005a9e;
+}
+
+.results {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #fdfdfd;
+}
+
+.error {
+  color: #d83b01;
+  font-weight: bold;
+  background: #fff4f2;
+  border: 1px solid #d83b01;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #eee;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+img.preview {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
