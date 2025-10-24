@@ -1,11 +1,14 @@
-import sys
-import os
-from dotenv import load_dotenv
-from azure.core.credentials import AzureKeyCredential
-import uuid # Para generar nombres de fichero únicos
-from flask import Flask, request, render_template, redirect, url_for
-from werkzeug.utils import secure_filename
-from azure.storage.blob import BlobServiceClient
+from flask import render_template
+from . import create_app
+app = create_app()
 
-app = Flask(__name__)
+@app.route('/')
+def index():
+    """
+    Muestra la página principal (index.html) 
+    con el selector de fichero.
+    """
+    return render_template('index.html')
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=False)
