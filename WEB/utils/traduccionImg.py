@@ -31,7 +31,7 @@ def traducir_texto_ocr(credential, endpoint, texto_original: str, idioma_destino
         )
 
         if not response or not response[0].translations:
-            return "No se ha detectado el idioma", "Sin traducción disponible"
+            return "No se ha detectado el idioma", "Sin traducción disponible", "No se ha detectado el idioma"
 
         translate_result = response[0]
         idioma_detectado = translate_result.detected_language.language if translate_result.detected_language else "desconocido"
@@ -40,8 +40,9 @@ def traducir_texto_ocr(credential, endpoint, texto_original: str, idioma_destino
         traducciones = []
         for t in translate_result.translations:
             traducciones.append(t.text)
-            
-        return idioma_detectado, " ".join(traducciones)
+        
+        idioma_destino = t.to
+        return idioma_detectado, " ".join(traducciones), idioma_destino
 
     except ClientAuthenticationError as e:
         abort(403, description=f"Error de autenticación en Azure Translator: {e.message}")

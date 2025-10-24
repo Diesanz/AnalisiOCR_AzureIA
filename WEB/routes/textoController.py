@@ -34,13 +34,14 @@ def subida_analisis_texto():
     blob_url = blob_client.url
 
     texto_extraido = extraer(blob_url)
-    idioma_detectado, texto_traducido = traduccion(texto_extraido)
+    idioma_detectado, texto_traducido, idioma_destino = traduccion(texto_extraido)
 
     return render_template(
         'index.html',
         imagen_url=blob_url,
         texto_original=texto_extraido if texto_extraido != " " else "Sin texto que extraer",
         idioma=idioma_detectado if texto_traducido != " " else "No se pudo detectar el idioma",
+        idioma_destino = idioma_destino if texto_traducido != " " else "No se pudo detectar el idioma",
         texto_traducido = texto_traducido if texto_traducido != " " else " No se pudo realizar la traducción"
     )
 
@@ -68,6 +69,6 @@ def traduccion(texto):
         CREDENTIAL_TRANSLATOR
     )
 
-    idioma_detectado, texto_traducido = traducir_texto_ocr(credential, ENPOINT_URL_TRANSLATOR, texto)
+    idioma_detectado, texto_traducido, idioma_destino= traducir_texto_ocr(credential, ENPOINT_URL_TRANSLATOR, texto)
 
-    return idioma_detectado, texto_traducido
+    return idioma_detectado, texto_traducido, idioma_destino
