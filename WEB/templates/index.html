@@ -55,12 +55,17 @@
                 {% endif %}
 
                 {% if frases_clave %}
-                    <h3>Etiquetado (Frases Clave) 🏷️</h3>
+                    <h3>Etiquetado (Frases Clave)</h3>
                     <pre>
-                    {% for frase in frases_clave %}
-                    - {{ frase }}
-                    {% endfor %}
+{% for frase in frases_clave %}
+- {{ frase }}
+{% endfor %}
                     </pre>
+                {% endif %}
+
+                {% if temas %}
+                    <h3>Temas Detectados</h3>
+                    <pre> {{ temas }} </pre>
                 {% endif %}
 
             </div>
