@@ -6,6 +6,7 @@ from azure.core.credentials import AzureKeyCredential
 from azure.core.credentials import AzureNamedKeyCredential
 from utils.textoOCR import obtener_texto_ocr
 from utils.traduccionImg import traducir_texto_ocr
+from utils.analisisTexto import analizar_texto_azure
 
 controller = Blueprint('textoController', __name__, url_prefix="/upload")
 
@@ -35,6 +36,7 @@ def subida_analisis_texto():
 
     texto_extraido = extraer(blob_url)
     idioma_detectado, texto_traducido, idioma_destino = traduccion(texto_extraido)
+    sentimiento, confianza, categorias = analisis(texto_traducido)
 
     return render_template(
         'index.html',
@@ -42,12 +44,14 @@ def subida_analisis_texto():
         texto_original=texto_extraido if texto_extraido != " " else "Sin texto que extraer",
         idioma=idioma_detectado if texto_traducido != " " else "No se pudo detectar el idioma",
         idioma_destino = idioma_destino if texto_traducido != " " else "No se pudo detectar el idioma",
-        texto_traducido = texto_traducido if texto_traducido != " " else " No se pudo realizar la traducción"
+        texto_traducido = texto_traducido if texto_traducido != " " else " No se pudo realizar la traducción",
+        sentimiento = sentimiento, 
+        frases_clave = categorias
     )
 
 def extraer(imagen_url) -> str:
     ENPOINT_URL_VISION = current_app.config["ENPOINT_URL_VISION"]
-    SUBSCRIPTION_ID =current_app.config["SUBSCRIPTION_ID"]
+    SUBSCRIPTION_ID = current_app.config["SUBSCRIPTION_ID"]
 
     credential = AzureKeyCredential(
         SUBSCRIPTION_ID
@@ -72,3 +76,15 @@ def traduccion(texto):
     idioma_detectado, texto_traducido, idioma_destino= traducir_texto_ocr(credential, ENPOINT_URL_TRANSLATOR, texto)
 
     return idioma_detectado, texto_traducido, idioma_destino
+
+def analisis(texto) -> str:
+    ENPOINT_URL_LANGUAGE = current_app.config["ENPOINT_URL_LANGUAGE"]
+    CREDENTIAL_LANGUAGE = current_app.config["CREDENTIAL_LANGUAGE"]
+
+    credential = AzureKeyCredential(
+        CREDENTIAL_LANGUAGE
+    )
+
+    resultado_texto = analizar_texto_azure(credential, ENPOINT_URL_LANGUAGE, texto)
+
+    return resultado_texto['sentimiento'], resultado_texto['confianza'], resultado_texto['categorias']
