@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, Blueprint, render_template, redirect, url_for, flash, current_app
+from flask import request,Blueprint, render_template, current_app
 import uuid # Para generar nombres de fichero únicos
 from werkzeug.utils import secure_filename
 from azure.storage.blob import BlobServiceClient
@@ -36,7 +36,9 @@ def subida_analisis_texto():
 
     texto_extraido = extraer(blob_url)
     idioma_detectado, texto_traducido, idioma_destino = traduccion(texto_extraido)
-    sentimiento, confianza, categorias, resultado_texto = analisis(texto_traducido)
+
+    if texto_traducido != " ":
+        sentimiento, _, categorias, resultado_texto = analisis(texto_traducido)
 
     return render_template(
         'index.html',
@@ -45,9 +47,9 @@ def subida_analisis_texto():
         idioma=idioma_detectado if texto_traducido != " " else "No se pudo detectar el idioma",
         idioma_destino = idioma_destino if texto_traducido != " " else "No se pudo detectar el idioma",
         texto_traducido = texto_traducido if texto_traducido != " " else " No se pudo realizar la traducción",
-        sentimiento = sentimiento, 
-        frases_clave = categorias,
-        temas=resultado_texto
+        sentimiento = sentimiento if texto_traducido != " " else " No se pudo detectar el sentimiento", 
+        frases_clave = categorias if texto_traducido != " " else "",
+        temas=resultado_texto if texto_traducido != " " else " No se pudo extraer el tema"
     )
 
 def extraer(imagen_url) -> str:
