@@ -36,7 +36,7 @@ def subida_analisis_texto():
 
     texto_extraido = extraer(blob_url)
     idioma_detectado, texto_traducido, idioma_destino = traduccion(texto_extraido)
-    sentimiento, confianza, categorias = analisis(texto_traducido)
+    sentimiento, confianza, categorias, resultado_texto = analisis(texto_traducido)
 
     return render_template(
         'index.html',
@@ -46,7 +46,8 @@ def subida_analisis_texto():
         idioma_destino = idioma_destino if texto_traducido != " " else "No se pudo detectar el idioma",
         texto_traducido = texto_traducido if texto_traducido != " " else " No se pudo realizar la traducción",
         sentimiento = sentimiento, 
-        frases_clave = categorias
+        frases_clave = categorias,
+        temas=resultado_texto
     )
 
 def extraer(imagen_url) -> str:
@@ -87,4 +88,4 @@ def analisis(texto) -> str:
 
     resultado_texto = analizar_texto_azure(credential, ENPOINT_URL_LANGUAGE, texto)
 
-    return resultado_texto['sentimiento'], resultado_texto['confianza'], resultado_texto['categorias']
+    return resultado_texto['sentimiento'], resultado_texto['confianza'], resultado_texto['categorias'], resultado_texto["etiqueta"]
