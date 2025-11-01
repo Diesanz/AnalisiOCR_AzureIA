@@ -12,14 +12,14 @@ def obtener_texto_ocr(credential, endpoint, image_url: str = None):
     - abort(400/403/500) con mensaje HTML si ocurre un error.
     """
 
-    # --- Crear el cliente ---
+    #--- Crear el cliente ---
     try:
         client = ImageAnalysisClient(endpoint=endpoint, credential=credential)
     except Exception as e:
         # Error crítico: no se pudo crear el cliente
         abort(500, description=f"No se pudo crear el cliente de ImageAnalysis. Detalle: {e}")
 
-    # --- Llamada a la API de Azure ---
+    #--- Llamada a la API de Azure ---
     try:
         result = client.analyze_from_url(
             image_url=image_url,
@@ -32,7 +32,7 @@ def obtener_texto_ocr(credential, endpoint, image_url: str = None):
     except Exception as e:
         abort(500, description=f"Error inesperado durante el análisis: {e}")
 
-    # --- Procesamiento del resultado ---
+    #--- Procesamiento del resultado ---
     if result.read is not None and result.read.blocks:
         texto_completo = ""
         for block in result.read.blocks:
@@ -40,5 +40,5 @@ def obtener_texto_ocr(credential, endpoint, image_url: str = None):
                 texto_completo += line.text + "\n"
         return texto_completo.strip()
     else:
-        # No se detectó texto
+        #No se detectó texto
         return " "

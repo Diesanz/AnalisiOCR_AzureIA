@@ -24,19 +24,19 @@ def analizar_texto_azure(credential, endpoint, texto: str):
 
     #--- Llamadas a la API de Azure ---
     try:
-        # Análisis de sentimiento
+        #Análisis de sentimiento
         sentiment_response = client.analyze_sentiment(documents=texto)[0]
         sentimiento = sentiment_response.sentiment
         confianza = sentiment_response.confidence_scores
 
-        # Extracción de frases clave
+        #Extracción de frases clave
         categoria_response = client.extract_key_phrases(documents=texto)[0]
         categorias = categoria_response.key_phrases
 
-        # Clasificación simple
+        #Clasificación simple
         etiqueta = clasificar_por_temas(categorias)
 
-        # Resultado estructurado
+        #Resultado estructurado
         return {
             "sentimiento": sentimiento,
             "confianza": {

@@ -14,7 +14,7 @@ def traducir_texto_ocr(credential, endpoint, texto_original: str, idioma_destino
     En caso de error, aborta con código HTTP adecuado y mensaje.
     """
 
-    # --- Crear el cliente ---
+    #--- Crear el cliente ---
     try:
         client = TextTranslationClient(
             credential=credential,
@@ -23,7 +23,7 @@ def traducir_texto_ocr(credential, endpoint, texto_original: str, idioma_destino
     except Exception as e:
         abort(500, description=f"No se pudo crear el cliente de TextTranslationClient. Detalle: {e}")
 
-    # --- Llamada al servicio de traducción ---
+    #--- Llamada al servicio de traducción ---
     try:
         response = client.translate(
             body=[texto_original],
@@ -36,7 +36,7 @@ def traducir_texto_ocr(credential, endpoint, texto_original: str, idioma_destino
         translate_result = response[0]
         idioma_detectado = translate_result.detected_language.language if translate_result.detected_language else "desconocido"
 
-        # Recopilar todas las traducciones devueltas
+        #Recopilar todas las traducciones devueltas
         traducciones = []
         for t in translate_result.translations:
             traducciones.append(t.text)
