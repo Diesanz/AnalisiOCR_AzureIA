@@ -31,7 +31,6 @@ def create_app():
         app.config[var] = value
 
     #Registrar Blueprint
-    #Para probar en local cambiar from routes.textoController import controller por from .routes.textoController import controller
     try:
         from routes.textoController import controller
         app.register_blueprint(controller)

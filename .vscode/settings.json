@@ -30,5 +30,8 @@
         "venv.bak{,/**}",
         ".vscode{,/**}"
     ],
-    "appService.defaultWebAppToDeploy": "None"
+    "appService.defaultWebAppToDeploy": "None",
+    "python-envs.defaultEnvManager": "ms-python.python:venv",
+    "python-envs.defaultPackageManager": "ms-python.python:pip",
+    "python-envs.pythonProjects": []
 }

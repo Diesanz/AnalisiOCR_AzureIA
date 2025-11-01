@@ -9,11 +9,6 @@ from utils.textoOCR import obtener_texto_ocr
 from utils.traduccionImg import traducir_texto_ocr
 from utils.analisisTexto import analizar_texto_azure
 
-#Para probar en local cambiar  from utils.textoOCR import obtener_texto_ocr por from WEB.utils.textoOCR import obtener_texto_ocr
-#Para probar en local cambiar  from utils.traduccionImg import traducir_texto_ocr por  from WEB.utils.traduccionImg import traducir_texto_ocr
-#Para probar en local cambiar  from utils.analisisTexto import analizar_texto_azure por from WEB.utils.analisisTexto import analizar_texto_azure
-
-
 #Creación de un Blueprint llamado 'textoController' con prefijo de URL '/upload'
 controller = Blueprint('textoController', __name__, url_prefix="/upload")
 
